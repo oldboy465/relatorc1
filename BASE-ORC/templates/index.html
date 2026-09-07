@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAG Assistente Orçamentário</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+  <div class="max-w-6xl mx-auto px-4 py-8">
+    <header class="mb-8 border-b border-slate-800 pb-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold text-sky-400">RAG Orçamento & Gestão</h1>
+        <p class="text-sm text-slate-400">Indexação Documental e Auditoria Analítica</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <label for="baseSelect" class="text-sm font-medium text-slate-300">Base:</label>
+        <select id="baseSelect" class="bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg p-2 focus:ring-sky-500 focus:border-sky-500">
+          {% for b in bases %}
+            <option value="{{ b.id }}">{{ b.nome }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+        <div class="text-xs text-slate-400">Documentos Totais</div>
+        <div id="statTotal" class="text-2xl font-bold mt-1 text-slate-200">-</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+        <div class="text-xs text-slate-400">Documentos Indexados</div>
+        <div id="statIndexados" class="text-2xl font-bold mt-1 text-emerald-400">-</div>
+      </div>
+      <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl">
+        <div class="text-xs text-slate-400">Última Sincronização</div>
+        <div id="statData" class="text-sm font-semibold mt-2 text-slate-300 truncate">-</div>
+      </div>
+      <div class="flex items-center">
+        <button id="btnSync" class="w-full bg-sky-600 hover:bg-sky-500 text-white font-medium py-3 px-4 rounded-xl transition duration-150">
+          🔄 Sincronizar Base
+        </button>
+      </div>
+    </div>
+
+    <main class="grid grid-cols-1 gap-6">
+      <div class="bg-slate-900 border border-slate-800 p-5 rounded-xl">
+        <label for="promptInput" class="block text-sm font-medium mb-2 text-slate-300">Pergunta Analítica</label>
+        <textarea id="promptInput" rows="3" class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-sky-500" placeholder="Ex: Qual o valor total previsto para dotação inicial em 2026?"></textarea>
+        <div class="flex justify-end mt-3">
+          <button id="btnAsk" class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2 px-6 rounded-lg transition duration-150">
+            Consultar RAG
+          </button>
+        </div>
+      </div>
+
+      <div id="loading" class="hidden bg-slate-900 border border-slate-800 p-6 rounded-xl text-center">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-sky-400 mb-2"></div>
+        <p class="text-sm text-slate-400">Processando consulta nos arquivos indexados...</p>
+      </div>
+
+      <div id="responseArea" class="hidden bg-slate-900 border border-slate-800 p-6 rounded-xl">
+        <h2 class="text-lg font-semibold text-slate-200 mb-2">Parecer do Assistente</h2>
+        <div id="responseText" class="text-slate-300 whitespace-pre-wrap leading-relaxed text-sm"></div>
+
+        <div class="mt-6 border-t border-slate-800 pt-4">
+          <h3 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-2">Fontes Verificadas na Base</h3>
+          <ul id="sourcesList" class="flex flex-wrap gap-2"></ul>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

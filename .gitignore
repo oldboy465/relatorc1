@@ -1,15 +1,6 @@
-# Banco de dados
-data/*.db
-data/*.sqlite3
-
-# Documentos da base
-storage/
-BASE-ORC/
-*.pdf
-*.xlsx
-*.docx
-*.pptx
-
-# Chaves e segredos
+venv/
+__pycache__/
+*.pyc
 api.txt
-.env
+BASE-ORC/data/*.db
+BASE-ORC/storage/
